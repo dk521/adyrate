@@ -11,7 +11,9 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.gluespark.joker.gluespark.Adapters.CategoryAdapter;
+import com.gluespark.joker.gluespark.Adapters.RecentReviewsAdapter;
 import com.gluespark.joker.gluespark.Adapters.RewardingStoreAdapter;
+import com.gluespark.joker.gluespark.Adapters.TopDealAdapter;
 import com.gluespark.joker.gluespark.ViewModel.MainActivityViewModel;
 
 public class MainActivity extends AppCompatActivity {
@@ -19,8 +21,12 @@ public class MainActivity extends AppCompatActivity {
     private Toast toast = null;
     private RecyclerView rewardingStoreRecycelerView;
     private RecyclerView mCategoryRecyclerView;
+    private RecyclerView mTopDealsRecyclerView;
+    private RecyclerView mRecentReviewsRecyclerView;
     private CategoryAdapter mCategoryAdapter;
+    private RecentReviewsAdapter mRecentReviewsAdapter;
     private RewardingStoreAdapter rewardingStoreAdapter;
+    private TopDealAdapter mTopDealAdapter;
 
     private MainActivityViewModel activityViewModel;
 
@@ -32,12 +38,33 @@ public class MainActivity extends AppCompatActivity {
 
         activityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
 
-        mCategoryRecyclerView = findViewById(R.id.category_recycler_view);
-        mCategoryRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        mCategoryAdapter=new CategoryAdapter(this);
-        mCategoryRecyclerView.setAdapter(mCategoryAdapter);
-        mCategoryAdapter.swap(activityViewModel.getCategories());
+        addCategory();
 
+        addRewardingStore();
+
+        addTopDeals();
+        addRecentReviews();
+
+        //ToolBar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+
+    }
+
+    private void addTopDeals() {
+        mTopDealsRecyclerView = findViewById(R.id.topDealsRecyclerView);
+        mTopDealsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+
+        mTopDealAdapter = new TopDealAdapter(this);
+
+        mTopDealsRecyclerView.setAdapter(rewardingStoreAdapter);
+
+        //swap adapters from viewModel
+        mTopDealAdapter.swap(activityViewModel.getRewardingStore());
+    }
+
+    private void addRewardingStore() {
         rewardingStoreRecycelerView = findViewById(R.id.rewardingStoreRecyclerView);
         rewardingStoreRecycelerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
@@ -47,12 +74,21 @@ public class MainActivity extends AppCompatActivity {
 
         //swap adapters from viewModel
         rewardingStoreAdapter.swap(activityViewModel.getRewardingStore());
+    }
 
-        //ToolBar
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-
+    private void addCategory() {
+        mCategoryRecyclerView = findViewById(R.id.category_recycler_view);
+        mCategoryRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        mCategoryAdapter=new CategoryAdapter(this);
+        mCategoryRecyclerView.setAdapter(mCategoryAdapter);
+        mCategoryAdapter.swap(activityViewModel.getCategories());
+    }
+    private void addRecentReviews() {
+       mRecentReviewsRecyclerView = findViewById(R.id.recentReviewsRecyclerView);
+       mRecentReviewsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+       mRecentReviewsAdapter=new RecentReviewsAdapter(this);
+       mRecentReviewsRecyclerView.setAdapter(mRecentReviewsAdapter);
+        mRecentReviewsAdapter.swap(activityViewModel.getRewardingStore());
     }
 
 

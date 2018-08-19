@@ -2,24 +2,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:layout_height="match_parent"
     android:background="@color/white_1000"
-    android:layout_marginTop="5dp"
+    android:orientation="vertical" android:layout_marginTop="5dp"
     android:layout_marginBottom="5dp"
-    app:layout_scrollFlags="scroll|enterAlways">
+ >
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_scrollFlags="scroll|enterAlways"
         android:padding="5dp">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Rewarding Stores"
+            android:text="Recently Reviewed"
             android:textColor="@color/grey_500"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -39,10 +38,10 @@
 
 
     <android.support.v7.widget.RecyclerView
-        app:layout_scrollFlags="scroll|enterAlways"
-        android:layout_marginTop="4dp"
-        android:id="@+id/rewardingStoreRecyclerView"
+        android:id="@+id/recentReviewsRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        app:layout_scrollFlags="scroll|enterAlways" />
 
 </LinearLayout>
