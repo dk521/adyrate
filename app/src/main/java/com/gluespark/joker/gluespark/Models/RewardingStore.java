@@ -2,7 +2,7 @@ package com.gluespark.joker.gluespark.Models;
 
 public class RewardingStore {
 
-    String id,name,imageUrl,description,discount;
+  private   String id,name,imageUrl,description,discount;
 
     public RewardingStore(String id, String name, String imageUrl, String description, String discount) {
         this.id = id;

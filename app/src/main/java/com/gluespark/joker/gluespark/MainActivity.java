@@ -2,30 +2,24 @@ package com.gluespark.joker.gluespark;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.gluespark.joker.gluespark.Adapters.CategoryAdapter;
 import com.gluespark.joker.gluespark.Adapters.RewardingStoreAdapter;
 import com.gluespark.joker.gluespark.ViewModel.MainActivityViewModel;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity {
 
     private Toast toast = null;
     private RecyclerView rewardingStoreRecycelerView;
-
+    private RecyclerView mCategoryRecyclerView;
+    private CategoryAdapter mCategoryAdapter;
     private RewardingStoreAdapter rewardingStoreAdapter;
 
     private MainActivityViewModel activityViewModel;
@@ -38,8 +32,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         activityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
 
+        mCategoryRecyclerView = findViewById(R.id.category_recycler_view);
+        mCategoryRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        mCategoryAdapter=new CategoryAdapter(this);
+        mCategoryRecyclerView.setAdapter(mCategoryAdapter);
+        mCategoryAdapter.swap(activityViewModel.getCategories());
+
         rewardingStoreRecycelerView = findViewById(R.id.rewardingStoreRecyclerView);
-        rewardingStoreRecycelerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+        rewardingStoreRecycelerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
         rewardingStoreAdapter = new RewardingStoreAdapter(this);
 
@@ -52,30 +52,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //Drawer
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
 
     }
 
-    @Override
-    public void onBackPressed() {
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -89,8 +68,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.action_settings:
-                showToast("Setting Clicked");
+            case R.id.action_search:
+                showToast("Coming Soon");
+                break;
+            case R.id.action_position:
+                showToast("Coming Soon");
         }
 
         return super.onOptionsItemSelected(item);
@@ -110,28 +92,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.nav_camera:
-                break;
-            case R.id.nav_gallery:
-                break;
-            case R.id.nav_slideshow:
-                break;
-            case R.id.nav_manage:
-                break;
-            case R.id.nav_share:
-                break;
-            case R.id.nav_send:
-                break;
-        }
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
 
 }

@@ -28,7 +28,7 @@ public class RewardingStoreAdapter extends RecyclerView.Adapter<RewardingStoreAd
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_rewarding_store,parent,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rewarding_tab_item_design,parent,false);
         return new ViewHolder(v);
     }
 

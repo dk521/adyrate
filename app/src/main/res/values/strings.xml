@@ -9,4 +9,6 @@
     <string name="recommendations_for_you">Recommendations for you</string>
     <string name="your_location">YOUR LOCATION</string>
     <string name="search_hint">Search for restaurant, cuisine or dish...</string>
+    <string name="text_categories">Categories</string>
+    <string name="text_location">Location</string>
 </resources>
