@@ -5,24 +5,34 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 
+import com.gluespark.joker.gluespark.Database.AppDatabase;
+import com.gluespark.joker.gluespark.Database.TopDealModel;
 import com.gluespark.joker.gluespark.Junction;
 import com.gluespark.joker.gluespark.Models.Categories;
 import com.gluespark.joker.gluespark.Models.RewardingStore;
 import com.gluespark.joker.gluespark.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivityViewModel extends AndroidViewModel {
 
     private LiveData<ArrayList<RewardingStore>> rewardingStoreList;
+    private LiveData<ArrayList<TopDealModel>> mTopDealData;
     private Junction junction;
+    private AppDatabase mDatabase;
 
 
     public MainActivityViewModel(@NonNull Application application) {
         super(application);
 
         junction = Junction.getInstance(application.getApplicationContext());
+       mDatabase= junction.getAppDatabase();
+       mTopDealData=mDatabase.getTopDealDAO().getAllTopDealModel();
+    }
 
+    public LiveData<ArrayList<TopDealModel>> getAllTopDeals() {
+        return mTopDealData;
     }
 
     public ArrayList<RewardingStore> getRewardingStore() {
@@ -54,8 +64,8 @@ public class MainActivityViewModel extends AndroidViewModel {
                 R.drawable.category_image11,
                 R.drawable.category_image12};
         String[] title = {"Electronics", "Fitness", "Hotel", "Food", "Medical", "Discounts", "Travel"
-        ,"Games","Drinks","Footwear","Grocery","Salon"};
-        int[] ids = {1, 2, 3, 4, 5, 6, 7,8,9,10,11,12};
+                , "Games", "Drinks", "Footwear", "Grocery", "Salon"};
+        int[] ids = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
         for (int i = 0; i < images.length; i++) {
             localCategoriesArrayList.add(new Categories(ids[i], images[i], title[i]));
         }

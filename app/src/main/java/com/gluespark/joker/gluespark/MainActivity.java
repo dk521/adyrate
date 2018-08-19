@@ -1,7 +1,9 @@
 package com.gluespark.joker.gluespark;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,7 +16,10 @@ import com.gluespark.joker.gluespark.Adapters.CategoryAdapter;
 import com.gluespark.joker.gluespark.Adapters.RecentReviewsAdapter;
 import com.gluespark.joker.gluespark.Adapters.RewardingStoreAdapter;
 import com.gluespark.joker.gluespark.Adapters.TopDealAdapter;
+import com.gluespark.joker.gluespark.Database.TopDealModel;
 import com.gluespark.joker.gluespark.ViewModel.MainActivityViewModel;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,12 +41,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        activityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
+
 
         addCategory();
-
         addRewardingStore();
-
         addTopDeals();
         addRecentReviews();
 
@@ -49,7 +52,13 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
+        activityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
+        activityViewModel.getAllTopDeals().observe(MainActivity.this, new Observer<ArrayList<TopDealModel>>() {
+            @Override
+            public void onChanged(@Nullable ArrayList<TopDealModel> pTopDealModelArrayList) {
+                mTopDealAdapter.swap(pTopDealModelArrayList);
+            }
+        });
     }
 
     private void addTopDeals() {
@@ -61,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         mTopDealsRecyclerView.setAdapter(rewardingStoreAdapter);
 
         //swap adapters from viewModel
-        mTopDealAdapter.swap(activityViewModel.getRewardingStore());
+
     }
 
     private void addRewardingStore() {

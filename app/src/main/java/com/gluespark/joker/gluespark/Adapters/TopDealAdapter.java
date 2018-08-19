@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.gluespark.joker.gluespark.Database.TopDealModel;
 import com.gluespark.joker.gluespark.Models.RewardingStore;
 import com.gluespark.joker.gluespark.R;
 
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 public class TopDealAdapter extends RecyclerView.Adapter<TopDealAdapter.ViewHolder> {
 
     private Context context;
-    private ArrayList<RewardingStore> rewardingStoreArrayList = null;
+    private ArrayList<TopDealModel> mDealModelArrayList = null;
 
     public TopDealAdapter(Context context) {
         this.context = context;
@@ -41,12 +42,13 @@ public class TopDealAdapter extends RecyclerView.Adapter<TopDealAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return rewardingStoreArrayList == null ? 0 : rewardingStoreArrayList.size();
+        return mDealModelArrayList == null ? 0 : mDealModelArrayList.size();
     }
 
-    public void swap(ArrayList<RewardingStore> rewardingStore) {
 
-        this.rewardingStoreArrayList = rewardingStore;
+    public void swap(ArrayList<TopDealModel> pDealModelArrayList) {
+
+        this.mDealModelArrayList = pDealModelArrayList;
         notifyDataSetChanged();
 
     }
@@ -68,11 +70,11 @@ public class TopDealAdapter extends RecyclerView.Adapter<TopDealAdapter.ViewHold
 
         public void bind(int position) {
 
-            Glide.with(context).load(rewardingStoreArrayList.get(position).getImageUrl()).into(storeImage);
-            storeName.setText(rewardingStoreArrayList.get(position).getName());
-            storeDescription.setText(rewardingStoreArrayList.get(position).getDescription());
+            Glide.with(context).load(mDealModelArrayList.get(position).getImageUrl()).into(storeImage);
+            storeName.setText(mDealModelArrayList.get(position).getShopName());
+            storeDescription.setText(mDealModelArrayList.get(position).getShopAddress());
 
-            String discount = rewardingStoreArrayList.get(position).getDiscount();
+            String discount = mDealModelArrayList.get(position).getShopDiscountSmall();
             storeDiscount.setText("Earn upto "+discount+"% discount");
 
 
