@@ -1,5 +1,6 @@
 package com.gluespark.joker.gluespark.Networking;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -7,89 +8,80 @@ import java.util.List;
 public class ApiTopDealModel {
 
     @SerializedName("shop_address")
+    @Expose
     private String shopAddress;
-
     @SerializedName("shop_logo")
-    private String shopImage;
-
+    @Expose
+    private String shopLogo;
     @SerializedName("avg_rating")
-    private String shopRating;
-
+    @Expose
+    private String avgRating;
     @SerializedName("shop_name")
+    @Expose
     private String shopName;
-
     @SerializedName("points")
-    private List<String> points;
-
+    @Expose
+    private List<String> points = null;
     @SerializedName("discount")
-    private List<String> discount;
-
+    @Expose
+    private List<String> discount = null;
     @SerializedName("shop_id")
+    @Expose
     private String shopId;
-
-    public ApiTopDealModel(String pShopAddress, String pShopImage, String pShopRating, String pShopName, List<String> pPoints, List<String> pDiscount, String pShopId) {
-        shopAddress = pShopAddress;
-        shopImage = pShopImage;
-        shopRating = pShopRating;
-        shopName = pShopName;
-        points = pPoints;
-        discount = pDiscount;
-        shopId = pShopId;
-    }
 
     public String getShopAddress() {
         return shopAddress;
     }
 
-    public void setShopAddress(String pShopAddress) {
-        shopAddress = pShopAddress;
+    public void setShopAddress(String shopAddress) {
+        this.shopAddress = shopAddress;
     }
 
-    public String getShopImage() {
-        return shopImage;
+    public String getShopLogo() {
+        return shopLogo;
     }
 
-    public void setShopImage(String pShopImage) {
-        shopImage = pShopImage;
+    public void setShopLogo(String shopLogo) {
+        this.shopLogo = shopLogo;
     }
 
-    public String getShopRating() {
-        return shopRating;
+    public String getAvgRating() {
+        return avgRating;
     }
 
-    public void setShopRating(String pShopRating) {
-        shopRating = pShopRating;
+    public void setAvgRating(String avgRating) {
+        this.avgRating = avgRating;
     }
 
     public String getShopName() {
         return shopName;
     }
 
-    public void setShopName(String pShopName) {
-        shopName = pShopName;
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
     }
 
     public List<String> getPoints() {
         return points;
     }
 
-    public void setPoints(List<String> pPoints) {
-        points = pPoints;
+    public void setPoints(List<String> points) {
+        this.points = points;
     }
 
     public List<String> getDiscount() {
         return discount;
     }
 
-    public void setDiscount(List<String> pDiscount) {
-        discount = pDiscount;
+    public void setDiscount(List<String> discount) {
+        this.discount = discount;
     }
 
     public String getShopId() {
         return shopId;
     }
 
-    public void setShopId(String pShopId) {
-        shopId = pShopId;
+    public void setShopId(String shopId) {
+        this.shopId = shopId;
     }
 }

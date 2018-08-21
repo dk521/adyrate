@@ -4,10 +4,11 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.gluespark.joker.gluespark.Database.AppDatabase;
 import com.gluespark.joker.gluespark.Database.TopDealModel;
-import com.gluespark.joker.gluespark.Junction;
+import com.gluespark.joker.gluespark.Repositry.Junction;
 import com.gluespark.joker.gluespark.Models.Categories;
 import com.gluespark.joker.gluespark.R;
 
@@ -21,9 +22,10 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     public MainActivityViewModel(@NonNull Application application) {
         super(application);
-
+        Log.d("Network","VIEWMODEL");
         Junction localJunction = Junction.getInstance(application.getApplicationContext());
         AppDatabase localDatabase = localJunction.getAppDatabase();
+        localJunction.CallNetwork();
        mTopDealData= localDatabase.getTopDealDAO().getAllTopDealModel();
     }
 

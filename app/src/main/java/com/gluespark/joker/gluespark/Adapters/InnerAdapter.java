@@ -13,15 +13,14 @@ import com.bumptech.glide.Glide;
 import com.gluespark.joker.gluespark.Database.TopDealModel;
 import com.gluespark.joker.gluespark.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class TopDealAdapter extends RecyclerView.Adapter<TopDealAdapter.ViewHolder> {
+public class InnerAdapter extends RecyclerView.Adapter<InnerAdapter.ViewHolder> {
 
     private Context context;
     private List<TopDealModel> mDealModelArrayList = null;
 
-    public TopDealAdapter(Context context) {
+    public InnerAdapter(Context context) {
         this.context = context;
     }
 
@@ -29,7 +28,7 @@ public class TopDealAdapter extends RecyclerView.Adapter<TopDealAdapter.ViewHold
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rewarding_tab_item_design,parent,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.deal_single_shop_design,parent,false);
         return new ViewHolder(v);
     }
 

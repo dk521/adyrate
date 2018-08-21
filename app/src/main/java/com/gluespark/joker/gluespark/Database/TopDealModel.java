@@ -14,7 +14,7 @@ public class TopDealModel {
     public TopDealModel() {
     }
 
-    public TopDealModel(String pShopId, String pShopAddress, String pImageUrl, String pShopName, String pShopRating, String pShopDiscount1, String pShopDiscount2, String pShopPoints1, String pShopPoints2) {
+    public TopDealModel(@NonNull String pShopId, String pShopAddress, String pImageUrl, String pShopName, String pShopRating, String pShopDiscount1, String pShopDiscount2, String pShopPoints1, String pShopPoints2) {
         shopId = pShopId;
         shopAddress = pShopAddress;
         ImageUrl = pImageUrl;

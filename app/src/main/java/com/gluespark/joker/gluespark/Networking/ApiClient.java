@@ -6,9 +6,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
 
-    public static final String BASE_URL = "https://api.myjson.com/bins/";
+    public static final String BASE_URL = "https://api.myjson.com/";
     private static Retrofit retrofit = null;
-
 
     public static Retrofit getClient() {
         if (retrofit==null) {

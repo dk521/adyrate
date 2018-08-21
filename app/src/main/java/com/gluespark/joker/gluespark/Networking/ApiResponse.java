@@ -1,30 +1,32 @@
 package com.gluespark.joker.gluespark.Networking;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ApiResponse {
-
-    @SerializedName("top_deals")
-    private List<ApiTopDealModel> results;
     @SerializedName("count")
-    private String  totalResults;
+    @Expose
+    private String count;
+    @SerializedName("top_deals")
+    @Expose
+    private List<ApiTopDealModel> topDeals = null;
 
-    public List<ApiTopDealModel> getResults() {
-        return results;
+    public String getCount() {
+        return count;
     }
 
-    public void setResults(List<ApiTopDealModel> pResults) {
-        results = pResults;
+    public void setCount(String count) {
+        this.count = count;
     }
 
-    public String getTotalResults() {
-        return totalResults;
+    public List<ApiTopDealModel> getTopDeals() {
+        return topDeals;
     }
 
-    public void setTotalResults(String pTotalResults) {
-        totalResults = pTotalResults;
+    public void setTopDeals(List<ApiTopDealModel> topDeals) {
+        this.topDeals = topDeals;
     }
 }
