@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.gluespark.joker.gluespark.Models.Categories;
-import com.gluespark.joker.gluespark.Models.RewardingStore;
 import com.gluespark.joker.gluespark.R;
 
 import java.util.ArrayList;

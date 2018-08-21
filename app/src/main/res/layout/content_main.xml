@@ -11,11 +11,9 @@
     app:layout_scrollFlags="scroll|enterAlways">
     <include
         layout="@layout/category_view" />
-    <include layout="@layout/rewarding_stores_view" />
 
     <include layout="@layout/top_deals_view" />
 
-    <include layout="@layout/recent_review_view" />
 
 </LinearLayout>
 

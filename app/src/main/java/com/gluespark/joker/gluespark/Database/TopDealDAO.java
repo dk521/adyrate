@@ -16,7 +16,7 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 public interface TopDealDAO {
 
     @Query("select * from TopDealModel")
-    LiveData<ArrayList<TopDealModel>> getAllTopDealModel();
+    LiveData<List<TopDealModel>> getAllTopDealModel();
 
     @Query("select * from TopDealModel where shop_id=:id")
     TopDealModel getItemById(String id);

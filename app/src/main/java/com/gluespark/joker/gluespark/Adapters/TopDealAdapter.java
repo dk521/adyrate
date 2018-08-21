@@ -11,15 +11,15 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.gluespark.joker.gluespark.Database.TopDealModel;
-import com.gluespark.joker.gluespark.Models.RewardingStore;
 import com.gluespark.joker.gluespark.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TopDealAdapter extends RecyclerView.Adapter<TopDealAdapter.ViewHolder> {
 
     private Context context;
-    private ArrayList<TopDealModel> mDealModelArrayList = null;
+    private List<TopDealModel> mDealModelArrayList = null;
 
     public TopDealAdapter(Context context) {
         this.context = context;
@@ -46,7 +46,7 @@ public class TopDealAdapter extends RecyclerView.Adapter<TopDealAdapter.ViewHold
     }
 
 
-    public void swap(ArrayList<TopDealModel> pDealModelArrayList) {
+    public void swap(List<TopDealModel> pDealModelArrayList) {
 
         this.mDealModelArrayList = pDealModelArrayList;
         notifyDataSetChanged();
@@ -74,7 +74,7 @@ public class TopDealAdapter extends RecyclerView.Adapter<TopDealAdapter.ViewHold
             storeName.setText(mDealModelArrayList.get(position).getShopName());
             storeDescription.setText(mDealModelArrayList.get(position).getShopAddress());
 
-            String discount = mDealModelArrayList.get(position).getShopDiscountSmall();
+            String discount = mDealModelArrayList.get(position).getShopDiscount1();
             storeDiscount.setText("Earn upto "+discount+"% discount");
 
 
