@@ -8,12 +8,12 @@ import com.gluespark.joker.gluespark.Database.AppDatabase;
 import com.gluespark.joker.gluespark.Database.TopDealModel;
 import com.gluespark.joker.gluespark.Networking.ApiClient;
 import com.gluespark.joker.gluespark.Networking.ApiInterfaceEndpoints;
-import com.gluespark.joker.gluespark.Networking.ApiResponse;
-import com.gluespark.joker.gluespark.Networking.ApiTopDealModel;
+import com.gluespark.joker.gluespark.Networking.ApiResponseInner;
+import com.gluespark.joker.gluespark.Networking.ApiResponseOuter;
+import com.gluespark.joker.gluespark.Networking.ApiSingleDealModel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executor;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -23,8 +23,8 @@ public class Junction {
 
 
     private static AppDatabase mAppDatabase;
-    private static List<ApiTopDealModel> mList;
-    private static List<TopDealModel> mLocalDataList;
+    private static List<ApiSingleDealModel> mInnerList;
+    private static List<ApiResponseInner> mList;
     //private Executor mExecutor;
 
 
@@ -40,7 +40,6 @@ public class Junction {
 
     private Junction(Context applicationContext) {
         mAppDatabase = AppDatabase.getDatabase(applicationContext);
-        mLocalDataList = new ArrayList<>();
     }
 
     public AppDatabase getAppDatabase() {
@@ -55,30 +54,21 @@ public class Junction {
     private void getApiData() {
 
         ApiInterfaceEndpoints apiService = ApiClient.getClient().create(ApiInterfaceEndpoints.class);
-        Call<ApiResponse> call = apiService.getTopDeals("https://api.myjson.com/bins/16qouk");
-        call.enqueue(new Callback<ApiResponse>() {
+        Call<ApiResponseOuter> call = apiService.getDeals("https://api.myjson.com/bins/18umq0");
+        call.enqueue(new Callback<ApiResponseOuter>() {
             @Override
-            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
-                Log.d("Network Data",""+response.body().getTopDeals().get(0).getShopName());
-                Log.d("Network Data",""+response.body().getTopDeals().get(1).getShopName());
-                Log.d("Network Data",""+response.body().getTopDeals().get(2).getShopName());
-                Log.d("Network Data",""+response.body().getTopDeals().get(3).getShopName());
-                Log.d("Network Data",""+response.body().getTopDeals().get(4).getShopName());
-                List<ApiTopDealModel> localTopDealModelList = null;
-                if (response.body() != null) {
-                    localTopDealModelList = response.body().getTopDeals();
-                }
-                mList = localTopDealModelList;
-                if (response.body() != null) {
-                    String TotalDeals = response.body().getCount();
-                }
-                new MyDataSync().execute();
+            public void onResponse(Call<ApiResponseOuter> call, Response<ApiResponseOuter> response) {
 
-                //Log.d("Network", ""+response.code());
+                List<ApiResponseInner> mInnerResponseList=null;
+                if (response.body() != null) {
+                    mInnerResponseList = response.body().getApiResponseInners();
+                }
+                mList =mInnerResponseList;
+                new MyDataSync().execute();
             }
 
             @Override
-            public void onFailure(Call<ApiResponse> call, Throwable t) {
+            public void onFailure(Call<ApiResponseOuter> call, Throwable t) {
                 // Log error here since request failed
                 Log.e("Network Data", t.toString());
             }
@@ -91,25 +81,30 @@ public class Junction {
 
         @Override
         protected Integer doInBackground(Void... pLists) {
-            ArrayList<TopDealModel> localModels = new ArrayList<>();
-            for (ApiTopDealModel aPTopDealsList : mList) {
-                String shopId = aPTopDealsList.getShopId();
-                String shopName = aPTopDealsList.getShopName();
-                String shopImage = aPTopDealsList.getShopLogo();
-                String shopAddress = aPTopDealsList.getShopAddress();
-                String shopRating = aPTopDealsList.getAvgRating();
-                String discount1 = aPTopDealsList.getDiscount().get(0);
-                String discount2 = aPTopDealsList.getDiscount().get(1);
-                String point1 = aPTopDealsList.getPoints().get(0);
-                String point2 = aPTopDealsList.getPoints().get(1);
-                Log.d("BASE",shopName);
-                TopDealModel localModel=new TopDealModel(shopId, shopAddress, shopImage,
-                        shopName, shopRating, discount1, discount2, point1, point2);
-                localModels.add(localModel);
-                mAppDatabase.getTopDealDAO().addItemToTopDealModel(localModel);
+            String DealType=null;
+            String DealDescription=null;
+            for(ApiResponseInner list:mList){
+                DealType=list.getDealType();
+                DealDescription=list.getDescription();
+                List<ApiSingleDealModel> pList=list.getApiInnerModels();
+                for (ApiSingleDealModel aPTopDealsList : pList) {
+                    String shopId = aPTopDealsList.getShopId();
+                    String shopName = aPTopDealsList.getShopName();
+                    String shopImage = aPTopDealsList.getShopLogo();
+                    String shopAddress = aPTopDealsList.getShopAddress();
+                    String shopRating = aPTopDealsList.getAvgRating();
+                    String discount1 = aPTopDealsList.getDiscount().get(0);
+                    String discount2 = aPTopDealsList.getDiscount().get(1);
+                    String point1 = aPTopDealsList.getPoints().get(0);
+                    String point2 = aPTopDealsList.getPoints().get(1);
+                    Log.d("BASE",shopName);
+                    TopDealModel localModel=new TopDealModel(shopId, shopAddress, shopImage,
+                            shopName, shopRating, discount1, discount2, point1, point2,DealType,DealDescription);
+                    mAppDatabase.getTopDealDAO().addItemToTopDealModel(localModel);
+                }
+
             }
-            mLocalDataList=localModels;
-            Log.d("NET",mLocalDataList.get(0).getShopName());
+
             return 0;
         }
 

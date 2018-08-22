@@ -14,7 +14,7 @@ public class TopDealModel {
     public TopDealModel() {
     }
 
-    public TopDealModel(@NonNull String pShopId, String pShopAddress, String pImageUrl, String pShopName, String pShopRating, String pShopDiscount1, String pShopDiscount2, String pShopPoints1, String pShopPoints2) {
+    public TopDealModel(@NonNull String pShopId, String pShopAddress, String pImageUrl, String pShopName, String pShopRating, String pShopDiscount1, String pShopDiscount2, String pShopPoints1, String pShopPoints2, String pDealTitle, String pDealDescription) {
         shopId = pShopId;
         shopAddress = pShopAddress;
         ImageUrl = pImageUrl;
@@ -24,9 +24,9 @@ public class TopDealModel {
         shopDiscount2 = pShopDiscount2;
         shopPoints1 = pShopPoints1;
         shopPoints2 = pShopPoints2;
+        dealTitle = pDealTitle;
+        dealDescription = pDealDescription;
     }
-
-
 
     @PrimaryKey()@NonNull
     @ColumnInfo(name = "shop_id")
@@ -47,8 +47,26 @@ public class TopDealModel {
     private String shopPoints1;
     @ColumnInfo(name = "points_2")
     private String shopPoints2;
+    @ColumnInfo(name = "deal_title")
+    private String dealTitle;
+    @ColumnInfo(name="deal_des")
+    private String dealDescription;
 
+    public String getDealTitle() {
+        return dealTitle;
+    }
 
+    public void setDealTitle(String pDealTitle) {
+        dealTitle = pDealTitle;
+    }
+
+    public String getDealDescription() {
+        return dealDescription;
+    }
+
+    public void setDealDescription(String pDealDescription) {
+        dealDescription = pDealDescription;
+    }
 
     public String getShopDiscount1() {
         return shopDiscount1;

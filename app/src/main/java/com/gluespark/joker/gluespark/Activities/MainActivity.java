@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.gluespark.joker.gluespark.Adapters.CategoryAdapter;
 import com.gluespark.joker.gluespark.Adapters.InnerAdapter;
+import com.gluespark.joker.gluespark.Adapters.OuterAdapter;
 import com.gluespark.joker.gluespark.Database.TopDealModel;
 import com.gluespark.joker.gluespark.R;
 import com.gluespark.joker.gluespark.ViewModel.MainActivityViewModel;
@@ -31,10 +32,11 @@ public class MainActivity extends AppCompatActivity  implements ActivityCompat.O
     private Toast toast = null;
 
     private RecyclerView mCategoryRecyclerView;
-    private RecyclerView mTopDealsRecyclerView;
+    private RecyclerView mOuterRecyclerView;
     private ConstraintLayout mLayout;
     private CategoryAdapter mCategoryAdapter;
-    private InnerAdapter mInnerAdapter;
+    private OuterAdapter mOuterAdapter;
+   private   List<TopDealModel> mList;
 
     private MainActivityViewModel activityViewModel;
 
@@ -48,28 +50,33 @@ public class MainActivity extends AppCompatActivity  implements ActivityCompat.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         mLayout=findViewById(R.id.root);
         //ToolBar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
        // getPermission();
+        addTopDeals();
         activityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
         activityViewModel.getAllTopDeals().observe(MainActivity.this, new Observer<List<TopDealModel>>() {
             @Override
             public void onChanged(@Nullable List<TopDealModel> pTopDealModelArrayList) {
-                mInnerAdapter.swap(pTopDealModelArrayList);
+
+                mList=pTopDealModelArrayList;
+                mOuterAdapter.swap(pTopDealModelArrayList);
             }
         });
         addCategory();
-        addTopDeals();
+
     }
 
     private void addTopDeals() {
-        mTopDealsRecyclerView = findViewById(R.id.topDealsRecyclerView);
-        mTopDealsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        mInnerAdapter = new InnerAdapter(this);
-        mTopDealsRecyclerView.setAdapter(mInnerAdapter);
+        mOuterRecyclerView = findViewById(R.id.outerRecyclerView);
+        mOuterRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        mOuterAdapter = new OuterAdapter(this);
+        mOuterAdapter.swap(mList);
+        mOuterRecyclerView.setAdapter(mOuterAdapter);
     }
 
     private void addCategory() {

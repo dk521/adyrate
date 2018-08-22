@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class ApiTopDealModel {
+public class ApiSingleDealModel {
 
     @SerializedName("shop_address")
     @Expose

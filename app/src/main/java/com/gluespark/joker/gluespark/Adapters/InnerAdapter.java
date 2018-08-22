@@ -74,7 +74,8 @@ public class InnerAdapter extends RecyclerView.Adapter<InnerAdapter.ViewHolder> 
             storeDescription.setText(mDealModelArrayList.get(position).getShopAddress());
 
             String discount = mDealModelArrayList.get(position).getShopDiscount1();
-            storeDiscount.setText("Earn upto "+discount+"% discount");
+            String dis="Earn upto "+discount+" discount";
+            storeDiscount.setText(dis);
 
 
         }
