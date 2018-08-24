@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +19,10 @@ public class OuterAdapter extends RecyclerView.Adapter<OuterAdapter.OuterHolder>
 
     private List<TopDealModel> mList = null;
     private Context mContext;
-
+    private RecyclerView.RecycledViewPool viewPool;
     public OuterAdapter(Context pContext) {
         mContext = pContext;
+      //  viewPool = new RecyclerView.RecycledViewPool();
     }
 
     @NonNull
@@ -62,9 +64,13 @@ public class OuterAdapter extends RecyclerView.Adapter<OuterAdapter.OuterHolder>
         public void onBind(int position) {
 
             dealTitle.setText(mList.get(position).getDealTitle());
+            Log.d("nii",mList.get(position).getDealTitle());
             dealDiscription.setText(mList.get(position).getDealDescription());
+           // innerRecyclerView.setRecycledViewPool(viewPool);
             innerRecyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
+            innerRecyclerView.setNestedScrollingEnabled(false);
             InnerAdapter mInnerAdapter = new InnerAdapter(mContext);
+            mInnerAdapter.swap(mList);
             innerRecyclerView.setAdapter(mInnerAdapter);
         }
     }

@@ -8,9 +8,9 @@ import android.util.Log;
 
 import com.gluespark.joker.gluespark.Database.AppDatabase;
 import com.gluespark.joker.gluespark.Database.TopDealModel;
-import com.gluespark.joker.gluespark.Repositry.Junction;
 import com.gluespark.joker.gluespark.Models.Categories;
 import com.gluespark.joker.gluespark.R;
+import com.gluespark.joker.gluespark.Repositry.Junction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,19 +18,19 @@ import java.util.List;
 public class MainActivityViewModel extends AndroidViewModel {
 
     private LiveData<List<TopDealModel>> mTopDealData;
-
+    private AppDatabase localDatabase;
+    private Junction localJunction;
 
     public MainActivityViewModel(@NonNull Application application) {
         super(application);
-        Log.d("Network","VIEWMODEL");
-        Junction localJunction = Junction.getInstance(application.getApplicationContext());
-        AppDatabase localDatabase = localJunction.getAppDatabase();
-        localJunction.CallNetwork();
-       mTopDealData= localDatabase.getTopDealDAO().getAllTopDealModel();
+        Log.d("Network", "VIEWMODEL");
+        localJunction = Junction.getInstance(application.getApplicationContext());
+        localDatabase = localJunction.getAppDatabase();
     }
 
     public LiveData<List<TopDealModel>> getAllTopDeals() {
-        return mTopDealData;
+        localJunction.CallNetwork();
+        return localDatabase.getTopDealDAO().getAllTopDealModel();
     }
 
     public ArrayList<Categories> getCategories() {

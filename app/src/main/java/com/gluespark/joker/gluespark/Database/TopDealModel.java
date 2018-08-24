@@ -10,7 +10,8 @@ import java.util.List;
 
 @Entity
 public class TopDealModel {
-
+    public static final int DEAL_TYPE=0;
+    public static final int IMAGE_TYPE=1;
     public TopDealModel() {
     }
 

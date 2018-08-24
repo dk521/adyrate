@@ -21,7 +21,9 @@
             app:layout_scrollFlags="scroll|enterAlways|snap"
             app:titleTextColor="@color/white_1000" />
 
-        <include layout="@layout/category_view" />
+        <include layout="@layout/category_view"
+            app:layout_scrollFlags="scroll|enterAlways|snap
+"/>
 
     </android.support.design.widget.AppBarLayout>
 

@@ -25,6 +25,7 @@ public class Junction {
     private static AppDatabase mAppDatabase;
     private static List<ApiSingleDealModel> mInnerList;
     private static List<ApiResponseInner> mList;
+
     //private Executor mExecutor;
 
 
@@ -83,8 +84,11 @@ public class Junction {
         protected Integer doInBackground(Void... pLists) {
             String DealType=null;
             String DealDescription=null;
+            int counter=0;
+            TopDealModel localModel=null;
             for(ApiResponseInner list:mList){
                 DealType=list.getDealType();
+                Log.d("Data",DealType);
                 DealDescription=list.getDescription();
                 List<ApiSingleDealModel> pList=list.getApiInnerModels();
                 for (ApiSingleDealModel aPTopDealsList : pList) {
@@ -98,12 +102,14 @@ public class Junction {
                     String point1 = aPTopDealsList.getPoints().get(0);
                     String point2 = aPTopDealsList.getPoints().get(1);
                     Log.d("BASE",shopName);
-                    TopDealModel localModel=new TopDealModel(shopId, shopAddress, shopImage,
+                     localModel=new TopDealModel(shopId, shopAddress, shopImage,
                             shopName, shopRating, discount1, discount2, point1, point2,DealType,DealDescription);
-                    mAppDatabase.getTopDealDAO().addItemToTopDealModel(localModel);
+                    if (localModel!=null)
+                        mAppDatabase.getTopDealDAO().addItemToTopDealModel(localModel);
                 }
 
             }
+
 
             return 0;
         }

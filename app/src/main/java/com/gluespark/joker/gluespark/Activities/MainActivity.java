@@ -1,113 +1,87 @@
 package com.gluespark.joker.gluespark.Activities;
 
-import android.Manifest;
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.gluespark.joker.gluespark.Adapters.CategoryAdapter;
-import com.gluespark.joker.gluespark.Adapters.InnerAdapter;
-import com.gluespark.joker.gluespark.Adapters.OuterAdapter;
-import com.gluespark.joker.gluespark.Database.TopDealModel;
+import com.gluespark.joker.gluespark.Fragments.HomeFragment;
+import com.gluespark.joker.gluespark.Fragments.ProfielFragment;
+import com.gluespark.joker.gluespark.Fragments.WalletFragment;
 import com.gluespark.joker.gluespark.R;
 import com.gluespark.joker.gluespark.ViewModel.MainActivityViewModel;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity  implements ActivityCompat.OnRequestPermissionsResultCallback{
 
     private Toast toast = null;
-
-    private RecyclerView mCategoryRecyclerView;
-    private RecyclerView mOuterRecyclerView;
-    private ConstraintLayout mLayout;
-    private CategoryAdapter mCategoryAdapter;
-    private OuterAdapter mOuterAdapter;
-   private   List<TopDealModel> mList;
-
     private MainActivityViewModel activityViewModel;
+    private FragmentManager localManager;
+    private BottomNavigationView mBottomNavigationView;
 
-    private static final int REQUEST_INTERNET = 0;
-    private static final int REQUEST_WRITE = 1;
-    private static final int REQUEST_READ = 2;
-    private static String[] PERMISSIONS_ACCESS = {Manifest.permission.INTERNET,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
+//    private static final int REQUEST_INTERNET = 0;
+//    private static final int REQUEST_WRITE = 1;
+//    private static final int REQUEST_READ = 2;
+//    private static String[] PERMISSIONS_ACCESS = {Manifest.permission.INTERNET,
+//            Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        mLayout=findViewById(R.id.root);
-        //ToolBar
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-       // getPermission();
-        addTopDeals();
+        FrameLayout localLayout = findViewById(R.id.root);
         activityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
-        activityViewModel.getAllTopDeals().observe(MainActivity.this, new Observer<List<TopDealModel>>() {
+        localManager=getSupportFragmentManager();
+        mBottomNavigationView=findViewById(R.id.navigationView);
+        viewFragment(new HomeFragment(),"Fragment_home");
+        mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onChanged(@Nullable List<TopDealModel> pTopDealModelArrayList) {
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.navigation_home:
+                        viewFragment(new HomeFragment(),"Fragment_home");
+                        return true;
+                    case R.id.navigation_wallet:
+                        viewFragment(new WalletFragment(), "Fragment_wallet");
+                        return true;
+                    case R.id.navigation_profile:
+                        viewFragment(new ProfielFragment(), "Fragment_profile");
+                        return true;
+                        default:  viewFragment(new HomeFragment(),"Fragment_home");
 
-                mList=pTopDealModelArrayList;
-                mOuterAdapter.swap(pTopDealModelArrayList);
+                }
+                return false;
             }
         });
-        addCategory();
+
+//        addTopDeals();
+//        activityViewModel.getAllTopDeals().observe(MainActivity.this, new Observer<List<TopDealModel>>() {
+//            @Override
+//            public void onChanged(@Nullable List<TopDealModel> pTopDealModelArrayList) {
+//
+//                mList=pTopDealModelArrayList;
+//                mOuterAdapter.swap(pTopDealModelArrayList);
+//            }
+//        });
+//
+//        addCategory();
 
     }
+    private void viewFragment(Fragment Fragment, String pFragment) {
 
-    private void addTopDeals() {
-        mOuterRecyclerView = findViewById(R.id.outerRecyclerView);
-        mOuterRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        mOuterAdapter = new OuterAdapter(this);
-        mOuterAdapter.swap(mList);
-        mOuterRecyclerView.setAdapter(mOuterAdapter);
+        FragmentTransaction localFragmentTransaction=localManager.beginTransaction();
+        localFragmentTransaction.replace(R.id.root,Fragment,pFragment);
+        localFragmentTransaction.commit();
     }
 
-    private void addCategory() {
-        mCategoryRecyclerView = findViewById(R.id.category_recycler_view);
-        mCategoryRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        mCategoryAdapter = new CategoryAdapter(this);
-        mCategoryRecyclerView.setAdapter(mCategoryAdapter);
-        mCategoryAdapter.swap(activityViewModel.getCategories());
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        getMenuInflater().inflate(R.menu.main, menu);
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.action_search:
-                showToast("Coming Soon");
-                break;
-            case R.id.action_position:
-                showToast("Coming Soon");
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     //show toast
     private void showToast(String toastMessage) {
@@ -123,33 +97,33 @@ public class MainActivity extends AppCompatActivity  implements ActivityCompat.O
 
     }
 
-    public void getPermission() {
-
-        if (ActivityCompat.checkSelfPermission
-                (this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.INTERNET)) {
-
-
-                Snackbar.make(mLayout, "Please grant internet to get data...",
-                        Snackbar.LENGTH_INDEFINITE)
-                        .setAction("OK", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                ActivityCompat.requestPermissions(MainActivity.this,
-                                        new String[]{Manifest.permission.INTERNET},
-                                        REQUEST_INTERNET);
-                            }
-                        })
-                        .show();
-            } else {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET},
-                        REQUEST_INTERNET);
-            }
-
-        } else {
-
-            showToast("Internet Permission are already Granted....");
-        }
-    }
+//    public void getPermission() {
+//
+//        if (ActivityCompat.checkSelfPermission
+//                (this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
+//            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+//                    Manifest.permission.INTERNET)) {
+//
+//
+////                Snackbar.make(mLayout, "Please grant internet to get data...",
+////                        Snackbar.LENGTH_INDEFINITE)
+////                        .setAction("OK", new View.OnClickListener() {
+////                            @Override
+////                            public void onClick(View view) {
+////                                ActivityCompat.requestPermissions(MainActivity.this,
+////                                        new String[]{Manifest.permission.INTERNET},
+////                                        REQUEST_INTERNET);
+////                            }
+////                        })
+////                        .show();
+//            } else {
+//                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET},
+//                        REQUEST_INTERNET);
+//            }
+//
+//        } else {
+//
+//            showToast("Internet Permission are already Granted....");
+//        }
+//    }
 }

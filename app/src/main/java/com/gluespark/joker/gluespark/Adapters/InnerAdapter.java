@@ -15,9 +15,11 @@ import com.gluespark.joker.gluespark.R;
 
 import java.util.List;
 
-public class InnerAdapter extends RecyclerView.Adapter<InnerAdapter.ViewHolder> {
+public class InnerAdapter extends RecyclerView.Adapter {
 
     private Context context;
+    private boolean flag = false;
+    private int mposition = 0;
     private List<TopDealModel> mDealModelArrayList = null;
 
     public InnerAdapter(Context context) {
@@ -26,24 +28,42 @@ public class InnerAdapter extends RecyclerView.Adapter<InnerAdapter.ViewHolder> 
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.deal_single_shop_design,parent,false);
-        return new ViewHolder(v);
+        switch (viewType) {
+            case TopDealModel.IMAGE_TYPE:
+                View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.dael_next_layout, parent, false);
+                return new NextHolder(v);
+            case TopDealModel.DEAL_TYPE:
+                View localView = LayoutInflater.from(parent.getContext()).inflate(R.layout.deal_single_shop_design, parent, false);
+                return new ViewHolder(localView);
+        }
+        return null;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
-        holder.bind(position);
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        switch (position){
+            case 4:
+                ((NextHolder)holder).onBind2(position);
+                break;
+                default: ((ViewHolder)holder).onBind1(position);
+        }
 
     }
 
     @Override
     public int getItemCount() {
-        return mDealModelArrayList == null ? 0 : mDealModelArrayList.size();
+        return mDealModelArrayList == null ? 0 : mDealModelArrayList.size()+1;
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        switch (position){
+            case 4: return TopDealModel.IMAGE_TYPE;
+            default: return TopDealModel.DEAL_TYPE;
+        }
+    }
 
     public void swap(List<TopDealModel> pDealModelArrayList) {
 
@@ -52,29 +72,39 @@ public class InnerAdapter extends RecyclerView.Adapter<InnerAdapter.ViewHolder> 
 
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class NextHolder extends RecyclerView.ViewHolder {
+
+        private ImageView next;
+
+        public NextHolder(View itemView) {
+            super(itemView);
+            next = itemView.findViewById(R.id.next);
+        }
+
+        void onBind2(int position) {
+            Glide.with(context).load(R.drawable.next).into(next);
+        }
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView storeImage;
-        private TextView storeName,storeDescription,storeDiscount;
+        private TextView storeName, storeDescription, storeDiscount;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
-
             storeImage = itemView.findViewById(R.id.rewardingStoreImageView);
             storeName = itemView.findViewById(R.id.rewardingStoreNameTV);
             storeDescription = itemView.findViewById(R.id.rewardingStoreDescTV);
             storeDiscount = itemView.findViewById(R.id.rewardingStoreDiscTV);
-
         }
 
-        public void bind(int position) {
-
+        void onBind1(int position) {
             Glide.with(context).load(mDealModelArrayList.get(position).getImageUrl()).into(storeImage);
             storeName.setText(mDealModelArrayList.get(position).getShopName());
             storeDescription.setText(mDealModelArrayList.get(position).getShopAddress());
-
             String discount = mDealModelArrayList.get(position).getShopDiscount1();
-            String dis="Earn upto "+discount+" discount";
+            String dis = "Earn upto " + discount + " discount";
             storeDiscount.setText(dis);
 
 
