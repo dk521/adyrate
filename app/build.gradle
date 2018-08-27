@@ -67,6 +67,12 @@ dependencies {
     annotationProcessor "com.google.dagger:dagger-android-processor:$dagger_version"
     annotationProcessor "com.google.dagger:dagger-compiler:$dagger_version"
 
+    //circleimageview
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
+
+    //custom BottomNavigation
+    implementation 'com.aurelhubert:ahbottomnavigation:2.0.4'
+
     //test
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

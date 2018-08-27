@@ -1,32 +1,40 @@
 package com.gluespark.joker.gluespark.Activities;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.BottomNavigationView;
+import android.os.Handler;
+import android.support.annotation.ColorRes;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
+import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
+import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
+import com.gluespark.joker.gluespark.Adapters.BottomBarAdapter;
+import com.gluespark.joker.gluespark.Adapters.NoSwipePager;
 import com.gluespark.joker.gluespark.Fragments.HomeFragment;
-import com.gluespark.joker.gluespark.Fragments.ProfielFragment;
+import com.gluespark.joker.gluespark.Fragments.ProfieFragment;
 import com.gluespark.joker.gluespark.Fragments.WalletFragment;
 import com.gluespark.joker.gluespark.R;
 import com.gluespark.joker.gluespark.ViewModel.MainActivityViewModel;
 
-public class MainActivity extends AppCompatActivity  implements ActivityCompat.OnRequestPermissionsResultCallback{
+public class MainActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
 
     private Toast toast = null;
+    private final int[] colors = {R.color.bottomtab_0, R.color.bottomtab_1, R.color.bottomtab_2};
     private MainActivityViewModel activityViewModel;
     private FragmentManager localManager;
-    private BottomNavigationView mBottomNavigationView;
-
+    private NoSwipePager viewPager;
+    private BottomBarAdapter pagerAdapter;
+    private AHBottomNavigation mBottomNavigationView;
+    private boolean notificationVisible = false;
 //    private static final int REQUEST_INTERNET = 0;
 //    private static final int REQUEST_WRITE = 1;
 //    private static final int REQUEST_READ = 2;
@@ -37,65 +45,132 @@ public class MainActivity extends AppCompatActivity  implements ActivityCompat.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        FrameLayout localLayout = findViewById(R.id.root);
+       // FrameLayout localLayout = findViewById(R.id.root);
         activityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
-        localManager=getSupportFragmentManager();
-        mBottomNavigationView=findViewById(R.id.navigationView);
-        viewFragment(new HomeFragment(),"Fragment_home");
-        mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.navigation_home:
-                        viewFragment(new HomeFragment(),"Fragment_home");
-                        return true;
-                    case R.id.navigation_wallet:
-                        viewFragment(new WalletFragment(), "Fragment_wallet");
-                        return true;
-                    case R.id.navigation_profile:
-                        viewFragment(new ProfielFragment(), "Fragment_profile");
-                        return true;
-                        default:  viewFragment(new HomeFragment(),"Fragment_home");
+        localManager = getSupportFragmentManager();
+        setupViewPager();
 
-                }
-                return false;
+        mBottomNavigationView = findViewById(R.id.bottom_navigation);
+        mBottomNavigationView.setBehaviorTranslationEnabled(true);
+
+
+       mBottomNavigationView.setCurrentItem(0);
+
+        setupBottomNavStyle();
+
+        createFakeNotification();
+
+        addBottomNavItems();
+        mBottomNavigationView.setCurrentItem(0);
+       mBottomNavigationView.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
+            @Override
+            public boolean onTabSelected(int position, boolean wasSelected) {
+//                fragment.updateColor(ContextCompat.getColor(MainActivity.this, colors[position]));
+
+                if (!wasSelected)
+                    viewPager.setCurrentItem(position);
+
+                // remove notification badge
+                int lastItemPos =mBottomNavigationView.getItemsCount() - 1;
+                if (notificationVisible && position == lastItemPos)
+                   mBottomNavigationView.setNotification(new AHNotification(), lastItemPos);
+
+                return true;
             }
         });
 
-//        addTopDeals();
-//        activityViewModel.getAllTopDeals().observe(MainActivity.this, new Observer<List<TopDealModel>>() {
-//            @Override
-//            public void onChanged(@Nullable List<TopDealModel> pTopDealModelArrayList) {
+    }
+    private void addBottomNavItems() {
+        AHBottomNavigationItem itemHome =
+                new AHBottomNavigationItem("Home",
+                        R.drawable.ic_home);
+        AHBottomNavigationItem itemWallet =
+                new AHBottomNavigationItem("Wallet",
+                        R.drawable.ic_account_balance_wallet_black_24dp);
+//        AHBottomNavigationItem itemNotification =
+//                new AHBottomNavigationItem("Notification",
+//                        R.drawable.ic_notifications_whiye_24dp);
+        AHBottomNavigationItem itemProfile =
+                new AHBottomNavigationItem("Profile",
+                        R.drawable.ic_person_black_24dp);
+        mBottomNavigationView.addItem(itemHome);
+        mBottomNavigationView.addItem(itemWallet);
+
+        mBottomNavigationView.addItem(itemProfile);
+    }
+    private void setupViewPager() {
+        viewPager = (NoSwipePager) findViewById(R.id.viewpager);
+        viewPager.setPagingEnabled(false);
+        pagerAdapter = new BottomBarAdapter(getSupportFragmentManager());
+
+        pagerAdapter.addFragments(new HomeFragment());
+        pagerAdapter.addFragments(new WalletFragment());
+        pagerAdapter.addFragments(new ProfieFragment());
+
+        viewPager.setAdapter(pagerAdapter);
+    }
+    private void createFakeNotification() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                AHNotification notification = new AHNotification.Builder()
+                        .setText("1")
+                        .setBackgroundColor(Color.YELLOW)
+                        .setTextColor(Color.BLACK)
+                        .build();
+                // Adding notification to last item.
+
+                mBottomNavigationView.setNotification(notification, mBottomNavigationView.getItemsCount() - 1);
+
+                notificationVisible = true;
+            }
+        }, 1000);
+    }
+    private void setupBottomNavStyle() {
+        /*
+        Set Bottom Navigation colors. Accent color for active item,
+        Inactive color when its view is disabled.
+        Will not be visible if setColored(true) and default current item is set.
+         */
+      // mBottomNavigationView.setDefaultBackgroundColor(fetchColor(R.color.blue_500));
+       mBottomNavigationView.setAccentColor(fetchColor(R.color.bottomtab_0));
+       mBottomNavigationView.setInactiveColor(fetchColor(R.color.bottomtab_item_resting));
+
+        // Colors for selected (active) and non-selected items.
+       mBottomNavigationView.setColoredModeColors(Color.WHITE,
+                fetchColor(R.color.bottomtab_item_resting));
+
+        //  Enables Reveal effect
+       mBottomNavigationView.setColored(true);
+
+        //  Displays item Title always (for selected and non-selected items)
+       mBottomNavigationView.setTitleState(AHBottomNavigation.TitleState.ALWAYS_SHOW);
+    }
+    private int fetchColor(@ColorRes int color) {
+        return ContextCompat.getColor(this, color);
+    }
+
+//    private void viewFragment(Fragment Fragment, String pFragment) {
 //
-//                mList=pTopDealModelArrayList;
-//                mOuterAdapter.swap(pTopDealModelArrayList);
-//            }
-//        });
+////        FragmentTransaction localFragmentTransaction = localManager.beginTransaction();
+////        localFragmentTransaction.replace(R.id.root, Fragment, pFragment);
+////        localFragmentTransaction.commit();
+////    }
 //
-//        addCategory();
-
-    }
-    private void viewFragment(Fragment Fragment, String pFragment) {
-
-        FragmentTransaction localFragmentTransaction=localManager.beginTransaction();
-        localFragmentTransaction.replace(R.id.root,Fragment,pFragment);
-        localFragmentTransaction.commit();
-    }
-
-
-    //show toast
-    private void showToast(String toastMessage) {
-
-        if (toast == null) {
-            toast = Toast.makeText(MainActivity.this, toastMessage, Toast.LENGTH_SHORT);
-        } else {
-            toast.cancel();
-            toast = Toast.makeText(MainActivity.this, toastMessage, Toast.LENGTH_SHORT);
-        }
-
-        toast.show();
-
-    }
+//
+//    //show toast
+//    private void showToast(String toastMessage) {
+//
+//        if (toast == null) {
+//            toast = Toast.makeText(MainActivity.this, toastMessage, Toast.LENGTH_SHORT);
+//        } else {
+//            toast.cancel();
+//            toast = Toast.makeText(MainActivity.this, toastMessage, Toast.LENGTH_SHORT);
+//        }
+//
+//        toast.show();
+//
+//    }
 
 //    public void getPermission() {
 //
