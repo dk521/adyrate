@@ -1,13 +1,16 @@
 package com.gluespark.joker.gluespark.Fragments;
 
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -17,12 +20,21 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.gluespark.joker.gluespark.Adapters.ProfileTabAdapter;
 import com.gluespark.joker.gluespark.R;
 
-public class ProfieFragment extends Fragment {
+public class ProfileFragment extends Fragment {
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+    ProfileTabAdapter adapter;
+    Context mContext;
+    private int[] tabIcons = {
+            R.drawable.ic_star_black_24dp,
+            R.drawable.ic_theaters_black_24dp,
+            R.drawable.ic_bookmark_black_24dp
+    };
 
-
-    public ProfieFragment() {
+    public ProfileFragment() {
         // Required empty public constructor
     }
 
@@ -35,13 +47,34 @@ public class ProfieFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        mContext = container.getContext();
         View localView = inflater.inflate(R.layout.fragment_profiel, container, false);
         Toolbar toolbar = localView.findViewById(R.id.toolbar_profile);
         final CollapsingToolbarLayout collapsingToolbarLayout = localView.findViewById(R.id.profile_collapse_bar);
         AppBarLayout appBarLayout = localView.findViewById(R.id.profile_appbar);
-        setToolBar(toolbar, collapsingToolbarLayout,appBarLayout);
+        setToolBar(toolbar, collapsingToolbarLayout, appBarLayout);
+
+        viewPager = (ViewPager) localView.findViewById(R.id.viewpager);
+        setupViewPager(viewPager);
+        tabLayout = (TabLayout) localView.findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
+        highLightCurrentTab(0);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                highLightCurrentTab(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
         return localView;
-    }
+}
 
     private void setToolBar(Toolbar pToolbar, final CollapsingToolbarLayout pCollapsingToolbarLayout, AppBarLayout pAppBarLayout) {
         ((AppCompatActivity) getActivity()).setSupportActionBar(pToolbar);
@@ -75,6 +108,30 @@ public class ProfieFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.profile_menu,menu);
+        inflater.inflate(R.menu.profile_menu, menu);
     }
+
+
+    private void highLightCurrentTab(int position) {
+        for (int i = 0; i < tabLayout.getTabCount(); i++) {
+            TabLayout.Tab tab = tabLayout.getTabAt(i);
+            assert tab != null;
+            tab.setCustomView(null);
+            tab.setCustomView(adapter.getTabView(i));
+        }
+        TabLayout.Tab tab = tabLayout.getTabAt(position);
+        assert tab != null;
+        tab.setCustomView(null);
+        tab.setCustomView(adapter.getSelectedTabView(position));
+    }
+
+    private void setupViewPager(ViewPager viewPager) {
+        adapter = new ProfileTabAdapter(((AppCompatActivity) getActivity()).getSupportFragmentManager(),mContext);
+        adapter.addFragment(new ReviewFragment(), "Reviews",tabIcons[0]);
+        adapter.addFragment(new coupon_fragment(), "Coupons",tabIcons[1]);
+        adapter.addFragment(new ReviewFragment(), "Saved",tabIcons[2]);
+        viewPager.setAdapter(adapter);
+    }
+
+
 }

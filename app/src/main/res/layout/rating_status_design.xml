@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_star_white_24dp"
+        android:drawablePadding="1dp"
+        android:drawingCacheQuality="auto"
+        android:text="3.5"
+        android:textColor="@color/white_1000"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:background="@drawable/rating_background_round"
+        android:textSize="14sp" />
+</LinearLayout>

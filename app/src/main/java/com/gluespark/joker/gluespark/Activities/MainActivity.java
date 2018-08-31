@@ -1,17 +1,18 @@
 package com.gluespark.joker.gluespark.Activities;
 
+import android.Manifest;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.ColorRes;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.FrameLayout;
+import android.view.View;
 import android.widget.Toast;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
@@ -20,7 +21,7 @@ import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.gluespark.joker.gluespark.Adapters.BottomBarAdapter;
 import com.gluespark.joker.gluespark.Adapters.NoSwipePager;
 import com.gluespark.joker.gluespark.Fragments.HomeFragment;
-import com.gluespark.joker.gluespark.Fragments.ProfieFragment;
+import com.gluespark.joker.gluespark.Fragments.ProfileFragment;
 import com.gluespark.joker.gluespark.Fragments.WalletFragment;
 import com.gluespark.joker.gluespark.R;
 import com.gluespark.joker.gluespark.ViewModel.MainActivityViewModel;
@@ -35,11 +36,11 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
     private BottomBarAdapter pagerAdapter;
     private AHBottomNavigation mBottomNavigationView;
     private boolean notificationVisible = false;
-//    private static final int REQUEST_INTERNET = 0;
-//    private static final int REQUEST_WRITE = 1;
-//    private static final int REQUEST_READ = 2;
-//    private static String[] PERMISSIONS_ACCESS = {Manifest.permission.INTERNET,
-//            Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
+    private static final int REQUEST_INTERNET = 0;
+    private static final int REQUEST_WRITE = 1;
+    private static final int REQUEST_READ = 2;
+    private static String[] PERMISSIONS_ACCESS = {Manifest.permission.INTERNET,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
 
         pagerAdapter.addFragments(new HomeFragment());
         pagerAdapter.addFragments(new WalletFragment());
-        pagerAdapter.addFragments(new ProfieFragment());
+        pagerAdapter.addFragments(new ProfileFragment());
 
         viewPager.setAdapter(pagerAdapter);
     }
@@ -159,46 +160,40 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
 //
 //
 //    //show toast
-//    private void showToast(String toastMessage) {
-//
-//        if (toast == null) {
-//            toast = Toast.makeText(MainActivity.this, toastMessage, Toast.LENGTH_SHORT);
-//        } else {
-//            toast.cancel();
-//            toast = Toast.makeText(MainActivity.this, toastMessage, Toast.LENGTH_SHORT);
-//        }
-//
-//        toast.show();
-//
-//    }
+    private void showToast(String toastMessage) {
 
-//    public void getPermission() {
-//
-//        if (ActivityCompat.checkSelfPermission
-//                (this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
-//            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-//                    Manifest.permission.INTERNET)) {
-//
-//
-////                Snackbar.make(mLayout, "Please grant internet to get data...",
-////                        Snackbar.LENGTH_INDEFINITE)
-////                        .setAction("OK", new View.OnClickListener() {
-////                            @Override
-////                            public void onClick(View view) {
-////                                ActivityCompat.requestPermissions(MainActivity.this,
-////                                        new String[]{Manifest.permission.INTERNET},
-////                                        REQUEST_INTERNET);
-////                            }
-////                        })
-////                        .show();
-//            } else {
-//                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET},
-//                        REQUEST_INTERNET);
-//            }
-//
-//        } else {
-//
-//            showToast("Internet Permission are already Granted....");
-//        }
-//    }
+        if (toast == null) {
+            toast = Toast.makeText(MainActivity.this, toastMessage, Toast.LENGTH_SHORT);
+        } else {
+            toast.cancel();
+            toast = Toast.makeText(MainActivity.this, toastMessage, Toast.LENGTH_SHORT);
+        }
+
+        toast.show();
+
+    }
+
+    public void getPermission() {
+
+        if (ActivityCompat.checkSelfPermission
+                (this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.INTERNET)) {
+
+
+
+                                ActivityCompat.requestPermissions(MainActivity.this,
+                                        new String[]{Manifest.permission.INTERNET},
+                                        REQUEST_INTERNET);
+
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET},
+                        REQUEST_INTERNET);
+            }
+
+        } else {
+
+            showToast("Internet Permission are already Granted....");
+        }
+    }
 }
