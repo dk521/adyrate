@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/profile_edit"
-        android:icon="@drawable/ic_edit_white_24dp"
-        android:title="Profile Edit"
+        android:icon="@drawable/ic_settings_white_24dp"
+        android:title="Settings"
         app:showAsAction="always"/>
 </menu>
