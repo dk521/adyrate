@@ -1,4 +1,4 @@
-package com.gluespark.joker.gluespark.Activities;
+package com.gluespark.joker.gluespark.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

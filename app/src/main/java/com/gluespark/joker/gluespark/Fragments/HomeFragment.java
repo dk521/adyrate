@@ -1,9 +1,11 @@
 package com.gluespark.joker.gluespark.Fragments;
 
 
+import android.app.Dialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,17 +24,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.gluespark.joker.gluespark.activity.LocationTracker;
 import com.gluespark.joker.gluespark.Adapters.CategoryAdapter;
 import com.gluespark.joker.gluespark.Adapters.OuterAdapter;
 import com.gluespark.joker.gluespark.Database.TopDealModel;
 import com.gluespark.joker.gluespark.R;
 import com.gluespark.joker.gluespark.ViewModel.MainActivityViewModel;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 
 import java.util.List;
 
 
 public class HomeFragment extends Fragment {
 
+    private static final String TAG = "HomeFragment";
+    private static final int ERROR_DIALOG_REQUEST = 9001;
     private MainActivityViewModel activityViewModel;
     private Context mContext;
     private RecyclerView mCategoryRecyclerView;
@@ -111,10 +119,34 @@ public class HomeFragment extends Fragment {
                 showToast("Coming Soon");
                 break;
             case R.id.action_position:
-                showToast("Coming Soon");
+                if(isServicesOK()) {
+                    Intent intent = new Intent(mContext, LocationTracker.class);
+                    startActivity(intent);
+                }
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public boolean isServicesOK(){
+        Log.d(TAG, "isServicesOK: checking google services version");
+
+        int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(mContext);
+
+        if(available == ConnectionResult.SUCCESS){
+            //everything is fine and the user can make map requests
+            Log.d(TAG, "isServicesOK: Google Play Services is working");
+            return true;
+        }
+        else if(GoogleApiAvailability.getInstance().isUserResolvableError(available)){
+            //an error occured but we can resolve it
+            Log.d(TAG, "isServicesOK: an error occured but we can fix it");
+            Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog((AppCompatActivity)getActivity(), available, ERROR_DIALOG_REQUEST);
+            dialog.show();
+        }else{
+          showToast("Can't get location. ERROR!!");
+        }
+        return false;
     }
 
     //show toast

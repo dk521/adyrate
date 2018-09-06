@@ -1,4 +1,4 @@
-package com.gluespark.joker.gluespark.Activities;
+package com.gluespark.joker.gluespark.activity;
 
 import android.Manifest;
 import android.arch.lifecycle.ViewModelProviders;
@@ -7,12 +7,10 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.ColorRes;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.Toast;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;

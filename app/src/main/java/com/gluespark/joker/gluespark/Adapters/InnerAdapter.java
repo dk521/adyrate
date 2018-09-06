@@ -54,7 +54,7 @@ public class InnerAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return mDealModelArrayList == null ? 0 : mDealModelArrayList.size()+1;
+        return mDealModelArrayList == null ? 0 : mDealModelArrayList.size();
     }
 
     @Override
