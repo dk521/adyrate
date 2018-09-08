@@ -36,7 +36,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import java.util.List;
 
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends BaseFragment {
 
     private static final String TAG = "HomeFragment";
     private static final int ERROR_DIALOG_REQUEST = 9001;
@@ -68,7 +68,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View localView = inflater.inflate(R.layout.fragment_home, container, false);
         mContext = container.getContext();
-        mLayout = localView.findViewById(R.id.root);
+
         mOuterRecyclerView = localView.findViewById(R.id.outerRecyclerView);
         mCategoryRecyclerView = localView.findViewById(R.id.category_recycler_view);
         Toolbar toolbar = localView.findViewById(R.id.toolbar);

@@ -26,7 +26,7 @@ import com.gluespark.joker.gluespark.Adapters.ProfileTabAdapter;
 import com.gluespark.joker.gluespark.R;
 import com.gluespark.joker.gluespark.activity.SettingsActivity;
 
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends BaseFragment {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     ProfileTabAdapter adapter;

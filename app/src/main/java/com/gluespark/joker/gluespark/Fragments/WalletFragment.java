@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import com.gluespark.joker.gluespark.R;
 
-public class WalletFragment extends Fragment {
+public class WalletFragment extends BaseFragment {
 
     private RecyclerView mTransactionView;
     @Override

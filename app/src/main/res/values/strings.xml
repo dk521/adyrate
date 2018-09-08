@@ -12,6 +12,14 @@
     <string name="text_categories">Categories</string>
     <string name="text_location">Location</string>
 
+    <array name="tab_name">
+        <item>Home</item>
+        <item>Search</item>
+        <item>Share</item>
+        <item>News</item>
+        <item>Profile</item>
+    </array>
+
     <string-array name="array_setting">
         <item>Account</item>
         <item>Help Center</item>

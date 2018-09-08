@@ -9,7 +9,7 @@ import android.widget.FrameLayout;
 
 import com.gluespark.joker.gluespark.R;
 
-public class NotificationFragment  extends Fragment{
+public class NotificationFragment  extends BaseFragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
