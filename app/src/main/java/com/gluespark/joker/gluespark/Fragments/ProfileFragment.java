@@ -22,9 +22,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.gluespark.joker.gluespark.activity.SettingsActivity;
 import com.gluespark.joker.gluespark.Adapters.ProfileTabAdapter;
 import com.gluespark.joker.gluespark.R;
+import com.gluespark.joker.gluespark.activity.SettingsActivity;
 
 public class ProfileFragment extends Fragment {
     private TabLayout tabLayout;
@@ -51,20 +51,21 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mContext = container.getContext();
-        View localView = inflater.inflate(R.layout.fragment_profiel, container, false);
+        View localView = inflater.inflate(R.layout.fragment_profile, container, false);
         Toolbar toolbar = localView.findViewById(R.id.toolbar_profile);
         final CollapsingToolbarLayout collapsingToolbarLayout = localView.findViewById(R.id.profile_collapse_bar);
         AppBarLayout appBarLayout = localView.findViewById(R.id.profile_appbar);
         setToolBar(toolbar, collapsingToolbarLayout, appBarLayout);
 
-        viewPager = (ViewPager) localView.findViewById(R.id.viewpager);
+        viewPager = localView.findViewById(R.id.viewpager);
         setupViewPager(viewPager);
-        tabLayout = (TabLayout) localView.findViewById(R.id.tabs);
+        tabLayout = localView.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
         highLightCurrentTab(0);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
             }
 
             @Override
@@ -77,11 +78,11 @@ public class ProfileFragment extends Fragment {
             }
         });
         return localView;
-}
+    }
 
     private void setToolBar(Toolbar pToolbar, final CollapsingToolbarLayout pCollapsingToolbarLayout, AppBarLayout pAppBarLayout) {
         ((AppCompatActivity) getActivity()).setSupportActionBar(pToolbar);
-        ActionBar localActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        final ActionBar localActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (localActionBar != null) {
             localActionBar.setDisplayHomeAsUpEnabled(true);
         }
@@ -98,6 +99,7 @@ public class ProfileFragment extends Fragment {
                 }
                 if (scrollRange + verticalOffset == 0) {
                     pCollapsingToolbarLayout.setTitle("Kanye West");
+                    pCollapsingToolbarLayout.setExpandedTitleMarginBottom(5);
                     pCollapsingToolbarLayout.setCollapsedTitleTextColor(Color.WHITE);
                     isShow = true;
                 } else if (isShow) {
@@ -116,9 +118,9 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.action_setting:
-                Intent localIntent=new Intent(mContext, SettingsActivity.class);
+                Intent localIntent = new Intent(mContext, SettingsActivity.class);
                 startActivity(localIntent);
                 return true;
 
@@ -140,10 +142,10 @@ public class ProfileFragment extends Fragment {
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        adapter = new ProfileTabAdapter(((AppCompatActivity) getActivity()).getSupportFragmentManager(),mContext);
-        adapter.addFragment(new ReviewFragment(), "Reviews",tabIcons[0]);
-        adapter.addFragment(new coupon_fragment(), "Coupons",tabIcons[1]);
-        adapter.addFragment(new ReviewFragment(), "Saved",tabIcons[2]);
+        adapter = new ProfileTabAdapter(((AppCompatActivity) getActivity()).getSupportFragmentManager(), mContext);
+        adapter.addFragment(new ReviewFragment(), "Reviews", tabIcons[0]);
+        adapter.addFragment(new coupon_fragment(), "Coupons", tabIcons[1]);
+        adapter.addFragment(new ReviewFragment(), "Saved", tabIcons[2]);
         viewPager.setAdapter(adapter);
     }
 

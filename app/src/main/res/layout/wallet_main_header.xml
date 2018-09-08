@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="75dp"
+
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:gravity="start"
+        android:text="Reward Points"
+        android:textColor="@color/black_1000"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:drawablePadding="5dp"
+        android:textColor="@color/black_1000"
+        android:drawableStart="@drawable/reward_points"
+        android:text="250.00"
+        android:textSize="50sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="10dp"
+        android:drawableEnd="@drawable/ic_arrow_end"
+        android:drawablePadding="2dp"
+        android:gravity="start|center_vertical"
+        android:text="Earn More Reward Points"
+        android:textColor="@color/blue_500"
+        android:textSize="15sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="10dp"
+        android:background="@color/grey_200" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="10dp"
+        android:drawableEnd="@drawable/ic_arrow_end"
+        android:drawablePadding="2dp"
+        android:gravity="start|center_vertical"
+        android:text="Redeem Your Points Now"
+        android:textColor="@color/blue_500"
+        android:textSize="15sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/blue_500" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="@color/deep_purple_A700" />
+</LinearLayout>

@@ -40,7 +40,10 @@
         <activity android:name=".activity.AccountActivity" />
         <activity android:name=".activity.WebActivity" />
         <activity android:name=".activity.ShopDetailActivity" />
-        <activity android:name=".activity.LoginActivty"></activity>
+        <activity android:name=".activity.LoginActivty"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
+        </activity>
     </application>
 
 </manifest>

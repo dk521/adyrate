@@ -1,6 +1,7 @@
 package com.gluespark.joker.gluespark.activity;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -33,9 +34,15 @@ public class SettingsActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                // TODO Auto-generated method stub
                 String value=adapter.getItem(position);
-                Toast.makeText(getApplicationContext(),value, Toast.LENGTH_SHORT).show();
+                switch (position){
+                    case 0:
+                        Intent localIntent=new Intent(SettingsActivity.this,AccountActivity.class);
+                        startActivity(localIntent);
+                        break;
+                        default: Toast.makeText(getApplicationContext(),value, Toast.LENGTH_SHORT).show();
+                }
+
 
             }
         });

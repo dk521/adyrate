@@ -19,6 +19,7 @@ import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.gluespark.joker.gluespark.Adapters.BottomBarAdapter;
 import com.gluespark.joker.gluespark.Adapters.NoSwipePager;
 import com.gluespark.joker.gluespark.Fragments.HomeFragment;
+import com.gluespark.joker.gluespark.Fragments.NotificationFragment;
 import com.gluespark.joker.gluespark.Fragments.ProfileFragment;
 import com.gluespark.joker.gluespark.Fragments.WalletFragment;
 import com.gluespark.joker.gluespark.R;
@@ -44,120 +45,109 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-       // FrameLayout localLayout = findViewById(R.id.root);
         activityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
         localManager = getSupportFragmentManager();
-        setupViewPager();
 
-        mBottomNavigationView = findViewById(R.id.bottom_navigation);
-        mBottomNavigationView.setBehaviorTranslationEnabled(true);
-
-
-       mBottomNavigationView.setCurrentItem(0);
-
-        setupBottomNavStyle();
-
-        createFakeNotification();
-
-        addBottomNavItems();
-        mBottomNavigationView.setCurrentItem(0);
-       mBottomNavigationView.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
-            @Override
-            public boolean onTabSelected(int position, boolean wasSelected) {
-//                fragment.updateColor(ContextCompat.getColor(MainActivity.this, colors[position]));
-
-                if (!wasSelected)
-                    viewPager.setCurrentItem(position);
-
-                // remove notification badge
-                int lastItemPos =mBottomNavigationView.getItemsCount() - 1;
-                if (notificationVisible && position == lastItemPos)
-                   mBottomNavigationView.setNotification(new AHNotification(), lastItemPos);
-
-                return true;
-            }
-        });
+//        mBottomNavigationView = findViewById(R.id.bottom_navigation);
+//        mBottomNavigationView.setBehaviorTranslationEnabled(true);
+//        mBottomNavigationView.setCurrentItem(0);
+//        setupViewPager();
+//        setupBottomNavStyle();
+//        createFakeNotification();
+//        addBottomNavItems();
+//        mBottomNavigationView.setCurrentItem(0);
+//       mBottomNavigationView.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
+//            @Override
+//            public boolean onTabSelected(int position, boolean wasSelected) {
+//
+//                if (!wasSelected)
+//                    viewPager.setCurrentItem(position);
+//
+//                // remove notification badge
+//                int lastItemPos =mBottomNavigationView.getItemsCount() - 1;
+//                if (notificationVisible && position == lastItemPos)
+//                   mBottomNavigationView.setNotification(new AHNotification(), lastItemPos);
+//
+//                return true;
+//            }
+//        });
 
     }
-    private void addBottomNavItems() {
-        AHBottomNavigationItem itemHome =
-                new AHBottomNavigationItem("Home",
-                        R.drawable.ic_home);
-        AHBottomNavigationItem itemWallet =
-                new AHBottomNavigationItem("Wallet",
-                        R.drawable.ic_account_balance_wallet_black_24dp);
+//    private void addBottomNavItems() {
+//        AHBottomNavigationItem itemHome =
+//                new AHBottomNavigationItem("Home",
+//                        R.drawable.ic_home);
+//        AHBottomNavigationItem itemWallet =
+//                new AHBottomNavigationItem("Wallet",
+//                        R.drawable.ic_account_balance_wallet_black_24dp);
+//        AHBottomNavigationItem itemScanner =
+//                new AHBottomNavigationItem("QR Scanner",
+//                        R.drawable.icon_qr_code_scnner);
 //        AHBottomNavigationItem itemNotification =
-//                new AHBottomNavigationItem("Notification",
+//                new AHBottomNavigationItem("Notifications",
 //                        R.drawable.ic_notifications_whiye_24dp);
-        AHBottomNavigationItem itemProfile =
-                new AHBottomNavigationItem("Profile",
-                        R.drawable.ic_person_black_24dp);
-        mBottomNavigationView.addItem(itemHome);
-        mBottomNavigationView.addItem(itemWallet);
-
-        mBottomNavigationView.addItem(itemProfile);
-    }
-    private void setupViewPager() {
-        viewPager = (NoSwipePager) findViewById(R.id.viewpager);
-        viewPager.setPagingEnabled(false);
-        pagerAdapter = new BottomBarAdapter(getSupportFragmentManager());
-
-        pagerAdapter.addFragments(new HomeFragment());
-        pagerAdapter.addFragments(new WalletFragment());
-        pagerAdapter.addFragments(new ProfileFragment());
-
-        viewPager.setAdapter(pagerAdapter);
-    }
-    private void createFakeNotification() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                AHNotification notification = new AHNotification.Builder()
-                        .setText("1")
-                        .setBackgroundColor(Color.YELLOW)
-                        .setTextColor(Color.BLACK)
-                        .build();
-                // Adding notification to last item.
-
-                mBottomNavigationView.setNotification(notification, mBottomNavigationView.getItemsCount() - 1);
-
-                notificationVisible = true;
-            }
-        }, 1000);
-    }
-    private void setupBottomNavStyle() {
-        /*
-        Set Bottom Navigation colors. Accent color for active item,
-        Inactive color when its view is disabled.
-        Will not be visible if setColored(true) and default current item is set.
-         */
-      // mBottomNavigationView.setDefaultBackgroundColor(fetchColor(R.color.blue_500));
-       mBottomNavigationView.setAccentColor(fetchColor(R.color.bottomtab_0));
-       mBottomNavigationView.setInactiveColor(fetchColor(R.color.bottomtab_item_resting));
-
-        // Colors for selected (active) and non-selected items.
-       mBottomNavigationView.setColoredModeColors(Color.WHITE,
-                fetchColor(R.color.bottomtab_item_resting));
-
-        //  Enables Reveal effect
-       mBottomNavigationView.setColored(true);
-
-        //  Displays item Title always (for selected and non-selected items)
-       mBottomNavigationView.setTitleState(AHBottomNavigation.TitleState.ALWAYS_SHOW);
-    }
-    private int fetchColor(@ColorRes int color) {
-        return ContextCompat.getColor(this, color);
-    }
-
-//    private void viewFragment(Fragment Fragment, String pFragment) {
+//        AHBottomNavigationItem itemProfile =
+//                new AHBottomNavigationItem("Profile",
+//                        R.drawable.ic_person_black_24dp);
+//        mBottomNavigationView.addItem(itemHome);
+//        mBottomNavigationView.addItem(itemWallet);
+//        mBottomNavigationView.addItem(itemScanner);
+//        mBottomNavigationView.addItem(itemNotification);
+//        mBottomNavigationView.addItem(itemProfile);
+//    }
+//    private void setupViewPager() {
+//        viewPager = findViewById(R.id.viewpager);
+//        viewPager.setPagingEnabled(false);
+//        pagerAdapter = new BottomBarAdapter(getSupportFragmentManager());
 //
-////        FragmentTransaction localFragmentTransaction = localManager.beginTransaction();
-////        localFragmentTransaction.replace(R.id.root, Fragment, pFragment);
-////        localFragmentTransaction.commit();
-////    }
+//        pagerAdapter.addFragments(new HomeFragment());
+//        pagerAdapter.addFragments(new WalletFragment());
+//        pagerAdapter.addFragments(new );
+//        pagerAdapter.addFragments(new NotificationFragment());
+//        pagerAdapter.addFragments(new ProfileFragment());
 //
+//        viewPager.setAdapter(pagerAdapter);
+//    }
+//    private void createFakeNotification() {
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                AHNotification notification = new AHNotification.Builder()
+//                        .setText("4")
+//                        .setBackgroundColor(getResources().getColor(R.color.red_500))
+//                        .setTextColor(Color.WHITE)
+//                        .build();
+//                // Adding notification to last item
+//                mBottomNavigationView.setNotification(notification, mBottomNavigationView.getItemsCount() - 2);
 //
-//    //show toast
+//                notificationVisible = true;
+//            }
+//        }, 1000);
+//    }
+//    private void setupBottomNavStyle() {
+//        /*
+//        Set Bottom Navigation colors. Accent color for active item,
+//        Inactive color when its view is disabled.
+//        Will not be visible if setColored(true) and default current item is set.
+//         */
+//       mBottomNavigationView.setDefaultBackgroundColor(fetchColor(R.color.blue_500));
+//       mBottomNavigationView.setAccentColor(fetchColor(R.color.white_1000));
+//       mBottomNavigationView.setInactiveColor(fetchColor(R.color.grey_400));
+//
+//        // Colors for selected (active) and non-selected items.
+//       mBottomNavigationView.setColoredModeColors(Color.WHITE,
+//                fetchColor(R.color.bottomtab_item_resting));
+//
+//        //  Enables Reveal effect
+//       mBottomNavigationView.setColored(false);
+//
+//        //  Displays item Title always (for selected and non-selected items)
+//       mBottomNavigationView.setTitleState(AHBottomNavigation.TitleState.ALWAYS_SHOW);
+//    }
+//    private int fetchColor(@ColorRes int color) {
+//        return ContextCompat.getColor(this, color);
+//    }
+
     private void showToast(String toastMessage) {
 
         if (toast == null) {
