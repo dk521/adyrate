@@ -10,14 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.gluespark.joker.gluespark.Database.TopDealModel;
+import com.gluespark.joker.gluespark.Database.SingleShopModel;
 import com.gluespark.joker.gluespark.R;
 
 import java.util.List;
 
 public class OuterAdapter extends RecyclerView.Adapter<OuterAdapter.OuterHolder> {
 
-    private List<TopDealModel> mList = null;
+    private List<SingleShopModel> mList = null;
     private Context mContext;
     private RecyclerView.RecycledViewPool viewPool;
     public OuterAdapter(Context pContext) {
@@ -41,7 +41,7 @@ public class OuterAdapter extends RecyclerView.Adapter<OuterAdapter.OuterHolder>
     public int getItemCount() {
         return mList == null ? 0 : mList.size();
     }
-    public void swap(List<TopDealModel> pDealModelArrayList) {
+    public void swap(List<SingleShopModel> pDealModelArrayList) {
 
         this.mList = pDealModelArrayList;
         notifyDataSetChanged();

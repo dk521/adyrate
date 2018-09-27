@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,10 +23,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.gluespark.joker.gluespark.Database.SingleShopModel;
 import com.gluespark.joker.gluespark.activity.LocationTracker;
 import com.gluespark.joker.gluespark.Adapters.CategoryAdapter;
 import com.gluespark.joker.gluespark.Adapters.OuterAdapter;
-import com.gluespark.joker.gluespark.Database.TopDealModel;
 import com.gluespark.joker.gluespark.R;
 import com.gluespark.joker.gluespark.ViewModel.MainActivityViewModel;
 import com.google.android.gms.common.ConnectionResult;
@@ -75,12 +74,12 @@ public class HomeFragment extends BaseFragment {
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         activityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
         addTopDeals();
-        activityViewModel.getAllTopDeals().observe(getActivity(), new Observer<List<TopDealModel>>() {
+        activityViewModel.getAllTopDeals().observe(getActivity(), new Observer<List<SingleShopModel>>() {
             @Override
-            public void onChanged(@Nullable List<TopDealModel> pTopDealModelArrayList) {
+            public void onChanged(@Nullable List<SingleShopModel> pSingleShopModelArrayList) {
 
-                //    mList=pTopDealModelArrayList;
-                mOuterAdapter.swap(pTopDealModelArrayList);
+                //    mList=pSingleShopModelArrayList;
+                mOuterAdapter.swap(pSingleShopModelArrayList);
             }
         });
 
@@ -90,7 +89,6 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void addTopDeals() {
-
         mOuterRecyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         mOuterAdapter = new OuterAdapter(mContext);
         mOuterRecyclerView.setAdapter(mOuterAdapter);

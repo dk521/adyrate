@@ -7,29 +7,29 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.gluespark.joker.gluespark.Database.AppDatabase;
-import com.gluespark.joker.gluespark.Database.TopDealModel;
+import com.gluespark.joker.gluespark.Database.SingleShopModel;
 import com.gluespark.joker.gluespark.Models.Categories;
 import com.gluespark.joker.gluespark.R;
-import com.gluespark.joker.gluespark.Repositry.Junction;
+import com.gluespark.joker.gluespark.Repositry.Repo;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivityViewModel extends AndroidViewModel {
 
-    private LiveData<List<TopDealModel>> mTopDealData;
+    private LiveData<List<SingleShopModel>> mTopDealData;
     private AppDatabase localDatabase;
-    private Junction localJunction;
+    private Repo mLocalRepo;
 
     public MainActivityViewModel(@NonNull Application application) {
         super(application);
         Log.d("Network", "VIEWMODEL");
-        localJunction = Junction.getInstance(application.getApplicationContext());
-        localDatabase = localJunction.getAppDatabase();
+        mLocalRepo = Repo.getInstance(application.getApplicationContext());
+        localDatabase = mLocalRepo.getAppDatabase();
     }
 
-    public LiveData<List<TopDealModel>> getAllTopDeals() {
-        localJunction.CallNetwork();
+    public LiveData<List<SingleShopModel>> getAllTopDeals() {
+        mLocalRepo.CallNetwork();
         return localDatabase.getTopDealDAO().getAllTopDealModel();
     }
 

@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.gluespark.joker.gluespark.Database.TopDealModel;
+import com.gluespark.joker.gluespark.Database.SingleShopModel;
 import com.gluespark.joker.gluespark.R;
 
 import java.util.List;
@@ -20,7 +20,7 @@ public class InnerAdapter extends RecyclerView.Adapter {
     private Context context;
     private boolean flag = false;
     private int mposition = 0;
-    private List<TopDealModel> mDealModelArrayList = null;
+    private List<SingleShopModel> mDealModelArrayList = null;
 
     public InnerAdapter(Context context) {
         this.context = context;
@@ -31,10 +31,10 @@ public class InnerAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         switch (viewType) {
-            case TopDealModel.IMAGE_TYPE:
+            case SingleShopModel.IMAGE_TYPE:
                 View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.dael_next_layout, parent, false);
                 return new NextHolder(v);
-            case TopDealModel.DEAL_TYPE:
+            case SingleShopModel.DEAL_TYPE:
                 View localView = LayoutInflater.from(parent.getContext()).inflate(R.layout.deal_single_shop_design, parent, false);
                 return new ViewHolder(localView);
         }
@@ -60,12 +60,12 @@ public class InnerAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemViewType(int position) {
         switch (position){
-            case 4: return TopDealModel.IMAGE_TYPE;
-            default: return TopDealModel.DEAL_TYPE;
+            case 4: return SingleShopModel.IMAGE_TYPE;
+            default: return SingleShopModel.DEAL_TYPE;
         }
     }
 
-    public void swap(List<TopDealModel> pDealModelArrayList) {
+    public void swap(List<SingleShopModel> pDealModelArrayList) {
 
         this.mDealModelArrayList = pDealModelArrayList;
         notifyDataSetChanged();
